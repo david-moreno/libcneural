@@ -7,7 +7,7 @@ CC=gcc $(CFLAGS)
 $(NAME): $(OBJ)
 	$(CC) -o $(NAME) $(OBJ)
 
-cneural.o: cneural.c cneural.h cneural_t.h error.h
+cneural.o: cneural.c cneural.h error.h
 	$(CC) -c $<
 
 layer.o: layer.c layer.h error.h
@@ -23,7 +23,7 @@ error.o: error.c error.h
 random.o: random.c random.h
 	$(CC) -c $<
 
-graph.o: graph.c graph.h cneural_t.h
+graph.o: graph.c graph.h
 	$(CC) -c $<
 
 main.o: main.c

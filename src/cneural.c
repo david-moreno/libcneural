@@ -4,7 +4,6 @@
 
 #include <stdlib.h>
 #include "cneural.h"
-#include "cneural_t.h"
 #include "layer.h"
 #include "graph.h"
 #include "error.h"
@@ -13,6 +12,20 @@
 #define MIN_INPNUM 1
 #define MIN_OUTNUM 1
 #define MIN_NEURONNUM 1
+
+typedef enum {CN_FALSE, CN_TRUE} truth_t;
+
+typedef struct layer_info_t {
+	int neuron_num;
+	int inp_num;
+} layer_info_t;
+
+typedef struct cneural_t {
+	truth_t built;
+	int lay_num, inp_num, out_num;
+	layer_info_t *layer_info;
+	layer_t **layer;
+} cneural_t;
 
 static inline CN_ERROR_T check_param (int lay_num, int inp_num, int out_num)
 {
@@ -205,6 +218,16 @@ int cn_graph_network (cneural_t *network, const char *fname)
 	fclose(fp);
 
 	return r; 
+}
+
+int cn_get_layers_num (cneural_t *network)
+{
+	return network->lay_num;
+}
+
+int cn_get_layer_neuron_num (cneural_t *network, int layer)
+{
+	return network->layer_info[layer].neuron_num;
 }
 
 /* Error codes. */
