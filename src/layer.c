@@ -8,8 +8,8 @@
 #include "error.h"
 
 typedef struct layer_t {
-	int neuron_num;
-	neuron_t *neuron;
+	int neuron_num, inp_num;
+	neuron_t *neurons;
 } layer_t;
 
 layer_t *cn_layer_new (int neuron_num, int inp_num)
@@ -23,15 +23,31 @@ layer_t *cn_layer_new (int neuron_num, int inp_num)
 	}
 
 	layer->neuron_num = neuron_num;
-	layer->neuron = neurons_new(neuron_num, inp_num);
+	layer->inp_num = inp_num;
+	layer->neurons = neurons_new(neuron_num, inp_num);
 
 	return layer;
 }
 
 void cn_layer_free (layer_t *layer)
 {
-	neurons_free(layer->neuron, layer->neuron_num);
+	neurons_free(layer->neurons, layer->neuron_num);
 	if (layer != NULL) free(layer);
+}
+
+int get_neurons_num (layer_t *layer)
+{
+	return layer->neuron_num;
+}
+
+int get_inputs_num (layer_t *layer)
+{
+	return layer->inp_num;
+}
+
+neuron_t *get_neuron_array (layer_t *layer)
+{
+	return layer->neurons;
 }
 
 #ifdef DEBUG

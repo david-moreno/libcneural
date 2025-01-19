@@ -46,7 +46,7 @@ static void inputs_free (input_t *inputs)
 	if (inputs != NULL) free(inputs);
 }
 
-static int set_array_inputs (neuron_t *array, int num, int inp_num)
+static int alloc_array_inputs (neuron_t *array, int num, int inp_num)
 {
 	int i, j;
 
@@ -81,7 +81,7 @@ neuron_t *neurons_new (int num, int inp_num)
 		array[i].output = 0;
 	}
 
-	r = set_array_inputs(array, num, inp_num);
+	r = alloc_array_inputs(array, num, inp_num);
 	if (r != inp_num) {
 		set_error(CN_ERR_NOMEM);
 		if (array != NULL) free(array);
@@ -100,6 +100,16 @@ void neurons_free (neuron_t *array, int num)
 	}
 
 	if (array != NULL) free(array);
+}
+
+float get_neuron_input_value (neuron_t *neurons, int neuron_i, int inp_i)
+{
+	return neurons[neuron_i].input[inp_i].value;
+}
+
+float get_neuron_input_weight (neuron_t *neurons, int neuron_i, int inp_i)
+{
+	return neurons[neuron_i].input[inp_i].weight;
 }
 
 #ifdef DEBUG
