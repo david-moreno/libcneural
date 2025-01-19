@@ -8,9 +8,4 @@ void neurons_free (neuron_t *array, int num);
 float get_neuron_input_value (neuron_t *neurons, int neuron_i, int inp_i);
 float get_neuron_input_weight (neuron_t *neurons, int neuron_i, int inp_i);
 
-#ifdef DEBUG
-void neuron_info (neuron_t *neuron);
-void array_info (neuron_t *array, int len);
-#endif /* DEBUG */
-
 #endif /* NEURON_H */

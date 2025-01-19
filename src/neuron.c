@@ -111,35 +111,3 @@ float get_neuron_input_weight (neuron_t *neurons, int neuron_i, int inp_i)
 {
 	return neurons[neuron_i].input[inp_i].weight;
 }
-
-#ifdef DEBUG
-void neuron_info (neuron_t *neuron)
-{
-	int i, num;
-	float v, w;
-
-	num = neuron->input_num;
-	printf("\tNumber of inputs: %u\n", num);
-	for (i=0; i < num; i++) {
-		v = neuron->input[i].value;
-		w = neuron->input[i].weight;
-		printf("\t\tInput %u: %f, %f\n", i, v, w);
-	}
-	printf("\tStep function: %p\n", neuron->step);
-	printf("\tThreshold: %f\n", neuron->threshold);
-	printf("\tOutput: %f\n", neuron->output);
-}
-
-void array_info (neuron_t *array, int len)
-{
-	int i;
-	neuron_t *neuron;
-
-	neuron = &array[0];
-
-	for (i=0; i < len; i++) {
-		printf("Neuron %u\n", i);
-		neuron_info(&neuron[i]);
-	}
-}
-#endif /* DEBUG */

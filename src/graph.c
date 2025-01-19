@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "cneural.h"
-//#include "cneural_t.h"
 #include "graph.h"
 
 static int graph_layer (cneural_t *network, int index, FILE *fp)

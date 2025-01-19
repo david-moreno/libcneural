@@ -15,8 +15,4 @@ int cn_get_layer_neuron_num (cneural_t *network, int layer);
 /* Error codes. */
 char *cn_get_error_msg (void);
 
-#ifdef DEBUG
-void print_network (cneural_t *network);
-#endif
-
 #endif /* CNEURAL_H */

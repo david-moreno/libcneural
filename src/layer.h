@@ -11,8 +11,4 @@ int get_neurons_num (layer_t *layer);
 int get_inputs_num (layer_t *layer);
 neuron_t *get_neuron_array (layer_t *layer);
 
-#ifdef DEBUG
-void print_layer (layer_t *layer, int index);
-#endif /* DEBUG */
-
 #endif /* LAYER_H */

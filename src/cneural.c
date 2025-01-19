@@ -235,18 +235,3 @@ char *cn_get_error_msg (void)
 {
 	return get_error_msg();
 }
-
-#ifdef DEBUG
-void print_network (cneural_t *network)
-{
-	int i;
-
-	printf("Layers: %i\n", network->lay_num);
-	printf("Inputs: %i\n", network->inp_num);
-	printf("Output: %i\n", network->out_num);
-
-	for (i=0; i < network->lay_num; i++) {
-		print_layer(network->layer[i], i);
-	}
-}
-#endif /* DEBUG */

@@ -49,11 +49,3 @@ neuron_t *get_neuron_array (layer_t *layer)
 {
 	return layer->neurons;
 }
-
-#ifdef DEBUG
-void print_layer (layer_t *layer, int index)
-{
-	printf("\tLayer %i\n", index);
-	printf("\t* Neuron num: %i\n", layer->neuron_num);
-}
-#endif /* DEBUG */
