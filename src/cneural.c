@@ -122,8 +122,8 @@ static layer_t **alloc_layers (cneural_t *network)
 
 	lay_num = network->lay_num;
 	for (i=0; i < lay_num; i++) {
-		neuron_num = network->layer_info->neuron_num;
-		inp_num = network->layer_info->inp_num;
+		neuron_num = network->layer_info[i].neuron_num;
+		inp_num = network->layer_info[i].inp_num;
 
 		layer[i] = cn_layer_new(neuron_num, inp_num);
 		if (layer[i] == NULL) {
@@ -250,8 +250,7 @@ float cn_get_neuron_input_value (cneural_t *network, int layer_i, int neuron_i, 
 	if (input_i >= input_num) return 3.0;
 
 	neurons = get_neuron_array(network->layer[layer_i]);
-	//return get_neuron_input_value(neurons, neuron_i, input_i);
-	return 666.0;
+	return get_neuron_input_value(neurons, neuron_i, input_i);
 }
 
 float cn_get_neuron_input_weight (cneural_t *network, int layer_i, int neuron_i, int input_i)
@@ -283,12 +282,28 @@ char *cn_get_error_msg (void)
 }
 
 /* DEBUG */
-static void dump_network (cneural_t *network)
+void debug_dump_network (cneural_t *network)
 {
 	int layer_num, l;
 
 	layer_num = network->lay_num;
 	for (l=0; l < layer_num; l++) {
+		printf("[%i]  ", l);
+		debug_dump_layer(network->layer[l]);
+	}
+}
 
+/* DEBUG */
+void debug_dump_layer_info (cneural_t *network)
+{
+	int lay_num, neuron_num, inp_num, l;
+
+	lay_num = network->lay_num;
+	for (l=0; l < lay_num; l++) {
+		neuron_num = network->layer_info[l].neuron_num;
+		inp_num = network->layer_info[l].inp_num;
+		printf("* [%i]  ", l);
+		printf("%i neurons, %i inputs\n",
+				neuron_num, inp_num);
 	}
 }

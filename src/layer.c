@@ -49,3 +49,9 @@ neuron_t *get_neuron_array (layer_t *layer)
 {
 	return layer->neurons;
 }
+
+void debug_dump_layer (layer_t *layer)
+{
+	printf("%i neurons, %i inputs\n",
+			layer->neuron_num, layer->inp_num);
+}

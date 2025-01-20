@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
 	cn_build_network(nn);
 
 	cn_graph_network(nn, FNAME);
+	//debug_dump_layer_info(nn);
+	//debug_dump_network(nn);
 
 	cn_network_free(nn);
 
