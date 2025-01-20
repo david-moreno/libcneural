@@ -59,6 +59,7 @@ static int set_layer_info (cneural_t *network)
 	for (i=1; i < lay_num; i++) {
 		layer_info[i].neuron_num = neuron_num;
 		layer_info[i].inp_num = prev_inp_num;
+		prev_inp_num = neuron_num;
 	}
 
 	layer_info[i].neuron_num = out_num;
@@ -230,8 +231,64 @@ int cn_get_layer_neuron_num (cneural_t *network, int layer)
 	return network->layer_info[layer].neuron_num;
 }
 
+float cn_get_neuron_input_value (cneural_t *network, int layer_i, int neuron_i, int input_i)
+{
+	neuron_t *neurons;
+	int layer_num, neuron_num, input_num;
+
+	layer_num = network->lay_num;
+	neuron_num = network->layer_info[layer_i].neuron_num;
+	input_num = network->layer_info[layer_i].inp_num;
+
+	if (layer_i < 0) return -1.0;
+	if (layer_i >= layer_num) return 1.0;
+
+	if (neuron_i < 0) return -2.0;
+	if (neuron_i >= neuron_num) return 2.0;
+
+	if (input_i < 0) return -3.0;
+	if (input_i >= input_num) return 3.0;
+
+	neurons = get_neuron_array(network->layer[layer_i]);
+	//return get_neuron_input_value(neurons, neuron_i, input_i);
+	return 666.0;
+}
+
+float cn_get_neuron_input_weight (cneural_t *network, int layer_i, int neuron_i, int input_i)
+{
+	neuron_t *neurons;
+	int layer_num, neuron_num, input_num;
+
+	layer_num = network->lay_num;
+	neuron_num = network->layer_info[layer_i].neuron_num;
+	input_num = network->layer_info[layer_i].inp_num;
+
+	if (layer_i < 0) return -1.0;
+	if (layer_i >= layer_num) return 1.0;
+
+	if (neuron_i < 0) return -2.0;
+	if (neuron_i >= neuron_num) return 2.0;
+
+	if (input_i < 0) return -3.0;
+	if (input_i >= input_num) return 3.0;
+
+	neurons = get_neuron_array(network->layer[layer_i]);
+	return get_neuron_input_weight(neurons, neuron_i, input_i);
+}
+
 /* Error codes. */
 char *cn_get_error_msg (void)
 {
 	return get_error_msg();
+}
+
+/* DEBUG */
+static void dump_network (cneural_t *network)
+{
+	int layer_num, l;
+
+	layer_num = network->lay_num;
+	for (l=0; l < layer_num; l++) {
+
+	}
 }
