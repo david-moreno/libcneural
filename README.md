@@ -1,2 +1,2 @@
 # libcneural
-A flexible neural networks library written on C
+Small, flexible and experimental neural networks library written in C

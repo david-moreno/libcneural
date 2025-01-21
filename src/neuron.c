@@ -14,8 +14,9 @@ typedef struct input_t {
 typedef struct neuron_t {
 	int input_num;
 	input_t *input;
-	float (*step)(neuron_t *);
+	float (*activation)(neuron_t *);
 	float threshold;
+	float bias;
 	float output;
 } neuron_t;
 
@@ -30,7 +31,7 @@ static float sum (neuron_t *neuron)
 		s += v*w;
 	}
 
-	return s;
+	return s + neuron->bias;
 }
 
 static input_t *inputs_new (int inp_num)
@@ -76,7 +77,7 @@ neuron_t *neurons_new (int num, int inp_num)
 	if (array == NULL) return NULL;
 
 	for (i=0; i < num; i++) {
-		array[i].step = NULL;
+		array[i].activation = NULL;
 		array[i].threshold = 0;
 		array[i].output = 0;
 	}
