@@ -111,3 +111,9 @@ float get_neuron_input_weight (neuron_t *neurons, int neuron_i, int inp_i)
 {
 	return neurons[neuron_i].input[inp_i].weight;
 }
+
+float set_neuron_input_weight (neuron_t *neurons, int neuron_i, int inp_i, float weight)
+{
+	neurons[neuron_i].input[inp_i].weight = weight;
+	return weight;
+}

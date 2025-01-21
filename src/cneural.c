@@ -3,8 +3,10 @@
 #endif /* DEBUG */
 
 #include <stdlib.h>
+#include <time.h>
 #include "cneural.h"
 #include "layer.h"
+#include "random.h"
 #include "graph.h"
 #include "error.h"
 
@@ -12,6 +14,9 @@
 #define MIN_INPNUM 1
 #define MIN_OUTNUM 1
 #define MIN_NEURONNUM 1
+
+#define WEIGHT_INF -0.1
+#define WEIGHT_SUP 0.1
 
 typedef enum {CN_FALSE, CN_TRUE} truth_t;
 
@@ -23,6 +28,7 @@ typedef struct layer_info_t {
 typedef struct cneural_t {
 	truth_t built;
 	int lay_num, inp_num, out_num;
+	float weight_inf, weight_sup;
 	layer_info_t *layer_info;
 	layer_t **layer;
 } cneural_t;
@@ -97,6 +103,8 @@ cneural_t *cn_network_new (int lay_num, int inp_num, int out_num)
 	network->lay_num = lay_num;
 	network->inp_num = inp_num;
 	network->out_num = out_num;
+	network->weight_inf = WEIGHT_INF;
+	network->weight_sup = WEIGHT_SUP;
 
 	r = set_layer_info(network);
 	if (r != lay_num) {
@@ -140,6 +148,8 @@ static layer_t **alloc_layers (cneural_t *network)
 
 int cn_build_network (cneural_t *network)
 {
+	int neuron_num;
+
 	if (network->built == CN_TRUE) {
 		set_error(CN_ERR_BUILT);
 		return -1;
@@ -152,6 +162,14 @@ int cn_build_network (cneural_t *network)
 		return -1;
 	}
 
+	/* Input weights of the first layer must be 1. */
+	neuron_num = network->layer_info[0].neuron_num;
+	for (int n=0; n < neuron_num; n++) {
+		cn_set_neuron_input_weight(network, 0, n, 0, 1);
+	}
+
+	srand(time(NULL));
+	randomize_weights(network);
 	network->built = CN_TRUE;
 
 	return network->lay_num;
@@ -231,6 +249,11 @@ int cn_get_layer_neuron_num (cneural_t *network, int layer)
 	return network->layer_info[layer].neuron_num;
 }
 
+int cn_get_layer_input_num (cneural_t *network, int layer)
+{
+	return network->layer_info[layer].inp_num;
+}
+
 float cn_get_neuron_input_value (cneural_t *network, int layer_i, int neuron_i, int input_i)
 {
 	neuron_t *neurons;
@@ -273,6 +296,52 @@ float cn_get_neuron_input_weight (cneural_t *network, int layer_i, int neuron_i,
 
 	neurons = get_neuron_array(network->layer[layer_i]);
 	return get_neuron_input_weight(neurons, neuron_i, input_i);
+}
+
+float cn_get_weight_inf (cneural_t *network)
+{
+	return network->weight_inf;
+}
+
+float cn_get_weight_sup (cneural_t *network)
+{
+	return network->weight_sup;
+}
+
+float cn_set_neuron_input_weight (cneural_t *network, int layer_i, int neuron_i, int input_i, float weight)
+{
+	neuron_t *neurons;
+	int layer_num, neuron_num, input_num;
+
+	layer_num = network->lay_num;
+	neuron_num = network->layer_info[layer_i].neuron_num;
+	input_num = network->layer_info[layer_i].inp_num;
+
+	if (layer_i < 0) return -1.0;
+	if (layer_i >= layer_num) return 1.0;
+
+	if (neuron_i < 0) return -2.0;
+	if (neuron_i >= neuron_num) return 2.0;
+
+	if (input_i < 0) return -3.0;
+	if (input_i >= input_num) return 3.0;
+
+	neurons = get_neuron_array(network->layer[layer_i]);
+	set_neuron_input_weight(neurons, neuron_i, input_i, weight);
+
+	return weight;
+}
+
+float cn_set_weight_inf (cneural_t *network, float inf)
+{
+	network->weight_inf = inf;
+	return inf;
+}
+
+float cn_set_weight_sup (cneural_t *network, float sup)
+{
+	network->weight_sup = sup;
+	return sup;
 }
 
 /* Error codes. */
