@@ -11,6 +11,4 @@ typedef enum {
 	TANH
 } ACTIVATION;
 
-float (*dispatcher (ACTIVATION type)) (float, float, float);
-
 #endif /* ACTIVATION_H */

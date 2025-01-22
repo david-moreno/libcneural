@@ -6,6 +6,7 @@
 #include <time.h>
 #include "cneural.h"
 #include "layer.h"
+#include "activation.h"
 #include "random.h"
 #include "graph.h"
 #include "error.h"
@@ -14,6 +15,8 @@
 #define MIN_INPNUM 1
 #define MIN_OUTNUM 1
 #define MIN_NEURONNUM 1
+
+#define ACT_TYPE RELU
 
 #define WEIGHT_INF -0.1
 #define WEIGHT_SUP 0.1
@@ -29,6 +32,7 @@ typedef struct cneural_t {
 	truth_t built;
 	int lay_num, inp_num, out_num;
 	float weight_inf, weight_sup;
+	ACTIVATION act_type;
 	layer_info_t *layer_info;
 	layer_t **layer;
 } cneural_t;
@@ -105,6 +109,7 @@ cneural_t *cn_network_new (int lay_num, int inp_num, int out_num)
 	network->out_num = out_num;
 	network->weight_inf = WEIGHT_INF;
 	network->weight_sup = WEIGHT_SUP;
+	network->act_type = ACT_TYPE;
 
 	r = set_layer_info(network);
 	if (r != lay_num) {
@@ -121,6 +126,7 @@ static layer_t **alloc_layers (cneural_t *network)
 {
 	int i, j, lay_num, neuron_num, inp_num;
 	layer_t **layer;
+	ACTIVATION act_type;
 
 	layer = calloc(network->lay_num, sizeof(layer_t *));
 	if (layer == NULL) {
@@ -132,8 +138,9 @@ static layer_t **alloc_layers (cneural_t *network)
 	for (i=0; i < lay_num; i++) {
 		neuron_num = network->layer_info[i].neuron_num;
 		inp_num = network->layer_info[i].inp_num;
+		act_type = network->act_type;
 
-		layer[i] = cn_layer_new(neuron_num, inp_num);
+		layer[i] = cn_layer_new(neuron_num, inp_num, act_type);
 		if (layer[i] == NULL) {
 			set_error(CN_ERR_NOMEM);
 			for (j=0; j < i; j++) {

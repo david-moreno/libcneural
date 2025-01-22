@@ -2,10 +2,11 @@ NAME=testme
 OBJ=cneural.o layer.o neuron.o error.o random.o graph.o main.o
 CFLAGS=-Wall -DDEBUG
 #CFLAGS=-Wall
+MATH=-lm
 CC=gcc $(CFLAGS)
 
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) $(MATH)
 
 cneural.o: cneural.c cneural.h error.h
 	$(CC) -c $<
@@ -14,8 +15,7 @@ layer.o: layer.c layer.h error.h
 	$(CC) -c $<
 
 neuron.o: neuron.c neuron.h error.h
-	$(CC) -c $<
-
+	$(CC) -c $< $(MATH)
 
 error.o: error.c error.h
 	$(CC) -c $<

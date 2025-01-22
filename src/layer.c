@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include "layer.h"
+#include "activation.h"
 #include "neuron.h"
 #include "error.h"
 
@@ -12,7 +13,7 @@ typedef struct layer_t {
 	neuron_t *neurons;
 } layer_t;
 
-layer_t *cn_layer_new (int neuron_num, int inp_num)
+layer_t *cn_layer_new (int neuron_num, int inp_num, ACTIVATION type)
 {
 	layer_t *layer;
 
@@ -24,7 +25,7 @@ layer_t *cn_layer_new (int neuron_num, int inp_num)
 
 	layer->neuron_num = neuron_num;
 	layer->inp_num = inp_num;
-	layer->neurons = neurons_new(neuron_num, inp_num);
+	layer->neurons = neurons_new(neuron_num, inp_num, type);
 
 	return layer;
 }
